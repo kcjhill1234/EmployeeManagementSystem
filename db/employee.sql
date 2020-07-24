@@ -26,3 +26,5 @@ role_id INT NOT NUll,
 manager_id INT NOT NULL,
 PRIMARY KEY (id)
 );
+
+SELECT * FROM employee_trackerdb.role;
