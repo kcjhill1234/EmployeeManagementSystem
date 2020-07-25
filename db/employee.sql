@@ -30,17 +30,49 @@ PRIMARY KEY (id)
 INSERT INTO department
 (name)
 VALUES
-('Front End'), ('Grocery'), ('Non Foods');
+('Front End');
+
+INSERT INTO department
+(name)
+VALUES
+('Grocery');
+
+INSERT INTO department
+(name)
+VALUES
+('Non Foods');
 
 INSERT INTO role
 (title, salary, department_id)
 VALUES
-('clerk', 18000, 1), ('lead', 25000, 2), ('manager', 50000, 3);
+('clerk', 18000, 1);
+
+INSERT INTO role
+(title, salary, department_id)
+VALUES
+('lead', 25000, 2);
+
+INSERT INTO role
+(title, salary, department_id)
+VALUES
+('manager', 50000, 3);
 
 INSERT INTO employee 
 (first_name, last_name, role_id, manager_id)
 VALUES
-('Mike', 'Jackson', 1),
-('Jim', 'Davis', 1),
-('Sally', 'Roads', 2, 1),
+('Mike', 'Jackson', 1);
+
+INSERT INTO employee 
+(first_name, last_name, role_id, manager_id)
+VALUES
+('Jim', 'Davis', 1);
+
+INSERT INTO employee 
+(first_name, last_name, role_id, manager_id)
+VALUES
+('Sally', 'Roads', 2, 1);
+
+INSERT INTO employee 
+(first_name, last_name, role_id, manager_id)
+VALUES
 ('Pete', 'Baker', 3, 2);
