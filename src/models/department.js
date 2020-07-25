@@ -13,7 +13,7 @@ class Department {
     }
 
     update(id, name){
-        return this.orm.update('department', id, {name})
+        return this.orm.update('department', id, 'name', name)
     }
 
     delete(id){

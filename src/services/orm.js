@@ -11,7 +11,7 @@ const database = (queryString) => new Promise((resolve, reject) => {
 
 const objToSql = (data) => {
     return Object.entries(data).map(entry => {
-        return `${entry[0]} = '${entry[1]}'`
+        return `${entry[0]} = ${entry[1]}`
     }).join();
 }
 
@@ -31,13 +31,13 @@ class orm {
     }
 
     create(table, columns, values) {
-        const query = `INSERT INTO ${table} (${columns.join()}) VALUES (${values.map(value => `'${value}'`).join()})`;
-        //console.log('[CREATE]',query)
+        const query = `INSERT INTO ${table} (${columns.join()}) VALUES (${values.join()})`;
+        console.log('[CREATE]',query)
         return database(query);
     }
 
-    update(table, id, data){
-        const query = `UPDATE ${table} SET ${objToSql(data)} WHERE id = ${id}`;
+    update(table, id, column, value){
+        const query = `UPDATE ${table} SET ${column} = ${value} WHERE id = ${id}`;
         console.log('[UPDATE]',query)
         return database(query);
     }

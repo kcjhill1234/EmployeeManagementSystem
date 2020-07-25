@@ -41,6 +41,10 @@ const menuChoices = [
     name: 'Remove Role',
     value: 'removeRole'
   },
+  {
+    name: 'Exit',
+    value: 'exit'
+  }
 ]
 const questions = [
   {
@@ -53,3 +57,5 @@ const questions = [
 
 
 const MainMenu = () => inquirer.prompt(questions);
+
+module.exports = MainMenu
