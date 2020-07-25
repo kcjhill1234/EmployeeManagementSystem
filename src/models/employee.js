@@ -1,6 +1,6 @@
 
 class Employee {
-    constructor(orm){
+    constructor(orm) {
         this.orm = orm;
     }
 
@@ -8,25 +8,32 @@ class Employee {
         return this.orm.getAll('employee')
     }
 
-    getAllByManager(){
-return this.orm.getAllByManager('role')
+    getAllByManager(managerId) {
+        return this.orm.getAllByGroup('employee', `manager_id = ${managerId}`);
     }
 
-    getAllByDepartment() {
-return this.orm.getAllByDepartment('department')
+    getAllByDepartment(departmentId) {
+        return this.orm.query(`
+        SELECT e.* FROM employee e 
+        JOIN role r on e.role_id = r.id
+        WHERE r.department_id = ${departmentId}`);
     }
 
-    create(name) {
-return this.orm.create('employee', ['name'], [name])
+    create({ first_name, last_name, role_id, manager_id }) {
+        
+        const columns = ['first_name', 'last_name', 'role_id', 'manager_id'];
+        const values = [`'${first_name}'`, `'${last_name}'`, role_id, manager_id];
+
+        return this.orm.create('employee', columns, values)
     }
 
-    update(id, name) {
-return this.orm.update('employee', id, {name})
+    update(employee) {
+        return this.orm.update('employee', employee.id, employee)
     }
 
     delete(id) {
-return this.orm.delete('department', id)
+        return this.orm.delete('employee', id)
     }
 }
-
+            
 module.exports = Employee

@@ -24,6 +24,7 @@
   "dependencies": {
     "console.table": "^0.10.0",
     "inquirer": "^7.3.2",
+    "msnodesqlv8": "^2.0.0",
     "mysql2": "^2.1.0"
   }
 }

@@ -26,6 +26,10 @@ class orm {
 
     }
 
+    query(query) {
+        return database(query)
+    }
+
     create(table, columns, values) {
         const query = `INSERT INTO ${table} (${columns.join()}) VALUES (${values.map(value => `'${value}'`).join()})`;
         //console.log('[CREATE]',query)
