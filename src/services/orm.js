@@ -1,19 +1,15 @@
-const connection = require("./connection.js");
+//const connection = require("./connection.js");
+const sql = require('msnodesqlv8');
 
 const database = (queryString) => new Promise((resolve, reject) => {
-    connection.query(queryString, (err, results)=>{
+    const connectionString = 'server=.;Database=employee_trackerdb;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}'
+    sql.query(connectionString, queryString, (err, results)=>{
         if(err){
             reject(err)
         }
         resolve(results);
     })
 });
-
-const objToSql = (data) => {
-    return Object.entries(data).map(entry => {
-        return `${entry[0]} = '${entry[1]}'`
-    }).join();
-}
 
 class orm {
     constructor(){}
@@ -31,14 +27,14 @@ class orm {
     }
 
     create(table, columns, values) {
-        const query = `INSERT INTO ${table} (${columns.join()}) VALUES (${values.map(value => `'${value}'`).join()})`;
+        const query = `INSERT INTO ${table} (${columns.join()}) VALUES (${values.join()})`;
         //console.log('[CREATE]',query)
         return database(query);
     }
 
-    update(table, id, data){
-        const query = `UPDATE ${table} SET ${objToSql(data)} WHERE id = ${id}`;
-        console.log('[UPDATE]',query)
+    update(table, id, column, value){
+        const query = `UPDATE ${table} SET ${column} = ${value} WHERE id = ${id}`;
+        //console.log('[UPDATE]',query)
         return database(query);
     }
 

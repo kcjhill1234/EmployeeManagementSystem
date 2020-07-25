@@ -27,8 +27,8 @@ class Employee {
         return this.orm.create('employee', columns, values)
     }
 
-    update(employee) {
-        return this.orm.update('employee', employee.id, employee)
+    update(id, column, value) {
+        return this.orm.update('employee', id, column, value)
     }
 
     delete(id) {

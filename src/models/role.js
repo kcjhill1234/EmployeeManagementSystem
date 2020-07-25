@@ -10,12 +10,12 @@ class Role {
 
     create({ title, salary, department_id }) {
         const columns = ['title', 'salary', 'department_id'];
-        const values = [`'${title}'`, salary, department_id]
+        const values = [`'${title}'`, salary, department_id];
         return this.orm.create('role', columns , values )
     }
 
-    update(role){
-        return this.orm.update('role', role.id, role)
+    update(id, column, value){
+        return this.orm.update('role', id, column, value)
     }
 
     delete(id){

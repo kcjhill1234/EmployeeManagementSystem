@@ -1,17 +1,13 @@
-DROP DATABASE IF EXISTS employee_trackerdb;
-
 CREATE DATABASE employee_trackerdb;
 
-USE employee_trackerdb;
-
 CREATE TABLE department (
-id INT NOT NULL AUTO_INCREMENT,
+id INT NOT NULL IDENTITY(1,1),
 name VARCHAR(45) NULL,
 PRIMARY KEY (id)
 );
 
 CREATE TABLE role (
-id INT NOT NULL AUTO_INCREMENT,
+id INT NOT NULL IDENTITY(1,1),
 title VARCHAR(30),
 salary DECIMAL,
 department_id INT NOT NULL,
@@ -19,7 +15,7 @@ PRIMARY KEY (id)
 );
 
 CREATE TABLE employee (
-id INT NOT NULL AUTO_INCREMENT ,
+id INT NOT NULL IDENTITY(1,1) ,
 first_name VARCHAR(30),
 last_name VARCHAR(30),
 role_id INT NOT NUll,
