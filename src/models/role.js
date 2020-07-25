@@ -8,12 +8,14 @@ class Role {
         return this.orm.getAll('role');
     }
 
-    create(id, name, salary, department_id){
-        return this.orm.create('role', id [name], [salary], [department_id])
+    create({ title, salary, department_id }) {
+        const columns = ['title', 'salary', 'department_id'];
+        const values = [`'${title}'`, salary, department_id]
+        return this.orm.create('role', columns , values )
     }
 
-    update(id, name){
-        return this.orm.update('role', id, {name})
+    update(role){
+        return this.orm.update('role', role.id, role)
     }
 
     delete(id){
