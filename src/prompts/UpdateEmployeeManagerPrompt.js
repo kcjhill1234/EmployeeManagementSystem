@@ -7,7 +7,7 @@ function buildQuestions({ employees }) {
       value: employee.id,
     }
   })
-  const questions = [
+  return [
     {
       type: 'list',
       name: 'employee_id',
@@ -21,7 +21,6 @@ function buildQuestions({ employees }) {
       choices: [{ name: 'None', value: 'null' }].concat(employeeList)
     },
   ]
-  return questions
 }
 
 const UpdateEmployeeManagerPrompt = (dependencies) => inquirer.prompt(buildQuestions(dependencies));

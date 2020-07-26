@@ -69,14 +69,13 @@ function buildQuestions({ employees, roles, departments }) {
     menuChoices = menuChoices.filter(item => !choicesToRemove.includes(item.value))
   }
 
-
   if (roles.length === 0) {
     const choicesToRemove = [
       'addEmployee',
       'viewAllRoles',
       'removeRole',
     ]
-      menuChoices = menuChoices.filter(item => !choicesToRemove.includes(item.value))
+    menuChoices = menuChoices.filter(item => !choicesToRemove.includes(item.value))
   }
 
   if (employees.length === 0) {
@@ -91,7 +90,7 @@ function buildQuestions({ employees, roles, departments }) {
     menuChoices = menuChoices.filter(item => !choicesToRemove.includes(item.value))
   }
 
-  const questions = [
+  return [
     {
       type: 'list',
       name: 'menu',
@@ -99,9 +98,7 @@ function buildQuestions({ employees, roles, departments }) {
       choices: menuChoices
     },
   ]
-  return questions
 }
-
 
 const MainMenu = (dependencies) => inquirer.prompt(buildQuestions(dependencies));
 

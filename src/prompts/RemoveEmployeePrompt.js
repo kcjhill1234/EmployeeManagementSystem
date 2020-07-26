@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 
 function buildQuestions({ employees }) {
-  const questions = [
+  return [
     {
       type: 'list',
       name: 'id',
@@ -14,8 +14,6 @@ function buildQuestions({ employees }) {
       })
     },
   ]
-
-  return questions
 }
 
 const RemoveEmployeePrompt = (dependencies) => inquirer.prompt(buildQuestions(dependencies));

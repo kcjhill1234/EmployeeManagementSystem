@@ -17,11 +17,6 @@ class orm {
         return database(`SELECT * FROM ${table}`)
     }
 
-    getAllByGroup(table, condition){
-        return database(`SELECT * FROM ${table} WHERE ${condition}`);
-
-    }
-
     query(query) {
         return database(query)
     }

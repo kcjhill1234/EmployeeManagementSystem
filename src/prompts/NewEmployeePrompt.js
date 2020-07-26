@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 
 function buildQuestions({ employees, roles }) {
-  const questions = [
+  return [
     {
       type: 'input',
       name: 'first_name',
@@ -35,7 +35,6 @@ function buildQuestions({ employees, roles }) {
       }))
     },
   ]
-  return questions
 }
 
 const NewEmployeePrompt = (dependencies) => inquirer.prompt(buildQuestions(dependencies));

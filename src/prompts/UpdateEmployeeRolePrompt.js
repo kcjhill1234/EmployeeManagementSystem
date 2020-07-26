@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 
 function buildQuestions({ employees, roles }) {
-  const questions = [
+  return [
     {
       type: 'list',
       name: 'employee_id',
@@ -25,7 +25,6 @@ function buildQuestions({ employees, roles }) {
       })
     },
   ]
-  return questions
 }
 
 const UpdateEmployeeRolePrompt = (dependencies) => inquirer.prompt(buildQuestions(dependencies));

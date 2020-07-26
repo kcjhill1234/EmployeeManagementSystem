@@ -2,20 +2,20 @@
 const figlet = require('figlet');
 const cTable = require('console.table');
 const ORM = require('./services/orm');
-const Role = require('./models/role');
-const Employee = require('./models/employee');
-const Department = require('./models/department')
-const MainMenu = require('./prompts/MainMenu');
-const NewRolePrompt = require('./prompts/NewRolePrompt');
-const RemoveRolePrompt = require('./prompts/RemoveRolePrompt');
-const NewEmployeePrompt = require('./prompts/NewEmployeePrompt');
-const NewDepartmentPrompt = require('./prompts/NewDepartmentPrompt');
-const ChooseManagerPrompt = require('./prompts/ChooseManagerPrompt');
-const RemoveEmployeePrompt = require('./prompts/RemoveEmployeePrompt');
-const ChooseDepartmentPrompt = require('./prompts/ChooseDepartmentPrompt');
-const RemoveDepartmentPrompt = require('./prompts/RemoveDepartmentPrompt');
-const UpdateEmployeeRolePrompt = require('./prompts/UpdateEmployeeRolePrompt');
-const UpdateEmployeeManagerPrompt = require('./prompts/UpdateEmployeeManagerPrompt');
+const { Role, Employee, Department } = require('./models');
+const {
+    MainMenu,
+    NewRolePrompt,
+    RemoveRolePrompt,
+    NewEmployeePrompt,
+    NewDepartmentPrompt,
+    ChooseManagerPrompt,
+    RemoveEmployeePrompt,
+    ChooseDepartmentPrompt,
+    RemoveDepartmentPrompt,
+    UpdateEmployeeManagerPrompt,
+    UpdateEmployeeRolePrompt
+} = require('./prompts');
 
 const orm = new ORM();
 const employeeModel = new Employee(orm);
@@ -45,6 +45,7 @@ async function main() {
             roles,
         }
 
+        console.log('\n')
         menuSelection = await MainMenu(promptDependencies);
         switch (menuSelection.menu) {
             case 'viewAllEmployees':
@@ -60,20 +61,23 @@ async function main() {
                 break;
             case 'addEmployee':
                 const newEmployee = await NewEmployeePrompt(promptDependencies)
-                //console.log(newEmployee);
+                console.log('\nEmployee was added!')
                 await employeeModel.create(newEmployee);
                 break;
             case 'removeEmployee':
                 const employeeToRemove = await RemoveEmployeePrompt(promptDependencies)
                 await employeeModel.delete(employeeToRemove.id);
+                console.log('\nEmployee was removed!')
                 break;
             case 'updateEmployeeRole':
                 const updatedRole = await UpdateEmployeeRolePrompt(promptDependencies)
                 await employeeModel.update(updatedRole.employee_id, 'role_id', updatedRole.role_id)
+                console.log('\nEmployee was updated!')
                 break;
             case 'updateEmployeeManager':
                 const updatedManager = await UpdateEmployeeManagerPrompt(promptDependencies)
                 await employeeModel.update(updatedManager.employee_id, 'manager_id', updatedManager.manager_id)
+                console.log('\nEmployee was updated!')
                 break;
             case 'viewAllRoles':
                 console.table(roles)
@@ -81,10 +85,12 @@ async function main() {
             case 'addRole':
                 const newRole = await NewRolePrompt(promptDependencies)
                 await roleModel.create(newRole);
+                console.log('\nRole was added!')
                 break;
             case 'removeRole':
                 const roleToRemove = await RemoveRolePrompt(promptDependencies)
                 await roleModel.delete(roleToRemove.id)
+                console.log('\nRole was removed!')
                 break;
             case 'viewAllDepartments':
                 console.table(departments)
@@ -92,10 +98,12 @@ async function main() {
             case 'addDepartment':
                 const newDepartment = await NewDepartmentPrompt(promptDependencies)
                 await departmentModel.create(newDepartment.name);
+                console.log('\nDepartment was added!')
                 break;
             case 'removeDepartment':
                 const departmentToRemove = await RemoveDepartmentPrompt(promptDependencies)
                 await departmentModel.delete(departmentToRemove.id)
+                console.log('\nDepartment was remove!')
                 break;
         }
     }
