@@ -1,41 +1,109 @@
 #! /usr/bin/env node
 const cTable = require('console.table')
-const DepartmentModel = require('./models/department');
-const connection = require('./services/connection');
+const figlet = require('figlet');
+// const DepartmentModel = require('./models/department');
+// const connection = require('./services/connection');
 const ORM = require('./services/orm');
-const orm = new ORM();
 const Employee = require('./models/employee');
 const Role = require('./models/role')
+// const MainMenu = require('./prompts/MainMenu');
+// const NewEmployeePrompt = require('./prompts/NewEmployeePrompt');
+// const RemoveEmployeePrompt = require('./prompts/RemoveEmployeePrompt');
+
+const Department = require('./models/department')
 const MainMenu = require('./prompts/MainMenu');
+const NewRolePrompt = require('./prompts/NewRolePrompt');
+const RemoveRolePrompt = require('./prompts/RemoveRolePrompt');
 const NewEmployeePrompt = require('./prompts/NewEmployeePrompt');
+const NewDepartmentPrompt = require('./prompts/NewDepartmentPrompt');
+const ChooseManagerPrompt = require('./prompts/ChooseManagerPrompt');
 const RemoveEmployeePrompt = require('./prompts/RemoveEmployeePrompt');
-const department = new DepartmentModel(orm);
-const employee = new Employee(orm);
-const role = new Role(orm);
-// employee.getAll({first_name: 'Jim', last_name: 'Hill', role_id: 4,  manager_id: -1}).then(results => {
-//     console.log(results)
-//     connection.end()
-// }).catch(error => {
-//     console.error(error)
-//     connection.end();
-// })
-MainMenu().then(async answers => {
-    switch (answers.menu) {
+const ChooseDepartmentPrompt = require('./prompts/ChooseDepartmentPrompt');
+const RemoveDepartmentPrompt = require('./prompts/RemoveDepartmentPrompt');
+const UpdateEmployeeRolePrompt = require('./prompts/UpdateEmployeeRolePrompt');
+const UpdateEmployeeManagerPrompt = require('./prompts/UpdateEmployeeManagerPrompt');
+
+
+const orm = new ORM();
+const departmentModel = new Department(orm);
+const employeeModel = new Employee(orm);
+const roleModel = new Role(orm);
+
+async function main() {
+    //console.log(figlet.fontsSync());
+    console.log(figlet.textSync('Employee Manager', {
+        font: 'Star Wars',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
+        width: 125,
+        whitespaceBreak: true
+    }))
+
+let menuSelection = {};
+while (menuSelection.menu !== 'exit') {
+    const employees = await employeeModel.getAll();
+    const departments = await departmentModel.getAll();
+    const roles = await roleModel.getAll();
+
+    const promptDependencies = {
+        employees,
+        departments,
+        roles,
+    }
+
+    mainSelection = await MainMenu(promptDependencies);
+    switch (menuSelection.menu) {
         case 'viewAllEmployees':
-            const employees = await employee.getAll()
             console.table(employees)
             break;
+        case 'viewAllEmployeesByManager':
+            const manager = await ChooseManagerPrompt(promptDependencies);
+            console.table(await employeeModel.getAllByManager(manager.id))
+            break;
+        case 'viewAllEmployeesByDepartment':
+            const department = await ChooseDepartmentPrompt(promptDependencies);
+            console.table(await employeeModel.getAllByDepartment(department.id))
+            break;
         case 'addEmployee':
-            const newEmployee = await NewEmployeePrompt()
-            // console.log(newEmployee)
-            await employee.create(newEmployee)
+            const newEmployee = await NewEmployeePrompt(promptDependencies)
+            await employeeModel.create(newEmployee);
             break;
         case 'removeEmployee':
-            const answer = await RemoveEmployeePrompt()
-            await employee.delete(answer.id)
-
+            const employeeToRemove = await RemoveEmployeePrompt(promptDependencies)
+            await employeeModel.delete(employeeToRemove.id);
+            break;
+        case 'updateEmployeeRole':
+            const updatedRole = await UpdateEmployeeRolePrompt(promptDependencies)
+            await employeeModel.update(updatedRole.employee_id, 'role_id', updatedRole.role_id)
+            break;
+        case 'updateEmployeeManager':
+            const updatedManager = await UpdateEmployeeManagerPrompt(promptDependencies)
+            await employeeModel.update(updatedManager.employee_id, 'manager_id', updatedManager.manager_id)
+            break;
+        case 'viewAllRoles':
+            console.table(roles)
+            break;
+        case 'addRole':
+            const newRole = await NewRolePrompt(promptDependencies)
+            await roleModel.create(newRole);
+            break;
+        case 'removeRole':
+            const roleToRemove = await RemoveRolePrompt(promptDependencies)
+            await roleModel.delete(roleToRemove.id)
+            break;
+        case 'viewAllDepartments':
+            console.table(departments)
+            break;
+        case 'addDepartment':
+            const newDepartment = await NewDepartmentPrompt(promptDependencies)
+            await departmentModel.create(newDepartment.name);
+            break;
+        case 'removeDepartment':
+            const departmentToRemove = await RemoveDepartmentPrompt(promptDependencies)
+            await departmentModel.delete(departmentToRemove.id)
+            break;
     }
-})
-
-//console.log("we are step up")
+    }
+}
+main()
 

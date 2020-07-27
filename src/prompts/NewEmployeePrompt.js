@@ -1,14 +1,14 @@
 const inquirer = require("inquirer")
-const ORM = require('../services/orm');
-const orm = new ORM();
-const Role = require('../models/role');
-const Employee = require('../models/employee');
-const roleModel = new Role(orm)
-const employeeModel = new Employee(orm)
+// const ORM = require('../services/orm');
+// const orm = new ORM();
+// const Role = require('../models/role');
+// const Employee = require('../models/employee');
+// const roleModel = new Role(orm)
+// const employeeModel = new Employee(orm)
 
-async function buildQuestions() {
-    const roles = await roleModel.getAll()
-    const employees = await employeeModel.getAll()
+function buildQuestions({ employees, roles }) {
+    // const roles = await roleModel.getAll()
+    // const employees = await employeeModel.getAll()
     const questions = [
         {
             type: 'input',
@@ -24,35 +24,31 @@ async function buildQuestions() {
             type: 'list',
             name: 'role_id',
             message: 'What is the employees role',
-            choices: roles.map(
-                role => {
-                    return {
-                        name: role.title,
-                        value: role.id
-                    }
+            choices: roles.map(role => {
+                return {
+                    name: role.title,
+                    value: role.id
                 }
-            )
+            })
+            
         },
         {
             type: 'list',
             name: 'manager_id',
-            message: 'Who is the employees manager',
-            choices: employees.map(
-                employee => {
-                    return {
-                        name: `${employee.first_name}, ${employee.last_name}`,
-                        value: employee.id
-                    }
+            message: 'Who is the employees manager?',
+            choices: [{ name: 'None', value: 'null' }].concat(employees.map(employee => {
+                return {
+                    name: `${employee.first_name}, ${employee.last_name}`,
+                    value: employee.id
                 }
-            ).concat([{
-                name: 'no manager',
-                value: -1
-            }])
-        }
+            }))
+
+        },
     ]
+
     return questions
 }
 
-const NewEmployeePrompt = async () => inquirer.prompt(await buildQuestions())
+const NewEmployeePrompt = (dependencies) => inquirer.prompt(buildQuestions(dependencies));
 
 module.exports = NewEmployeePrompt
