@@ -21,24 +21,19 @@ class orm {
         return database(`SELECT * FROM ${table}`)
     }
 
-    getAllByGroup(table, condition){
-        return database(`SELECT * FROM ${table} WHERE ${condition}`);
-
-    }
-
     query(query) {
         return database(query)
     }
 
     create(table, columns, values) {
         const query = `INSERT INTO ${table} (${columns.join()}) VALUES (${values.join()})`;
-        console.log('[CREATE]',query)
+        // console.log('[CREATE]',query)
         return database(query);
     }
 
     update(table, id, column, value){
         const query = `UPDATE ${table} SET ${column} = ${value} WHERE id = ${id}`;
-        console.log('[UPDATE]',query)
+        // console.log('[UPDATE]',query)
         return database(query);
     }
 

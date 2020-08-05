@@ -5,18 +5,53 @@ class Employee {
     }
 
     getAll() {
-        return this.orm.getAll('employee')
+        return this.orm.query(`
+        select 
+        e.id,
+        e.first_name,
+        e.last_name,
+        r.title,
+        d.name as department,
+        r.salary,
+        concat(m.first_name, " ", m.last_name) as manager
+        from employee e 
+        left join employee m on e.manager_id = m.id
+        join role r on e.role_id = r.id
+        join department d on r.department_id = d.id`)
     }
 
     getAllByManager(managerId) {
-        return this.orm.getAllByGroup('employee', `manager_id = ${managerId}`);
+        return this.orm.query(`select 
+        e.id,
+        e.first_name,
+        e.last_name,
+        r.title,
+        d.name as department,
+        r.salary,
+        concat(m.first_name, " ", m.last_name) as manager
+        from employee e 
+        left join employee m on e.manager_id = m.id
+        join role r on e.role_id = r.id
+        join department d on r.department_id = d.id
+        where e.manager_id =${managerId}
+        `);
     }
 
     getAllByDepartment(departmentId) {
         return this.orm.query(`
-        SELECT e.* FROM employee e 
-        JOIN role r on e.role_id = r.id
-        WHERE r.department_id = ${departmentId}`);
+        select 
+        e.id,
+        e.first_name,
+        e.last_name,
+        r.title,
+        d.name as department,
+        r.salary,
+        concat(m.first_name, " ", m.last_name) as manager
+        from employee e 
+        left join employee m on e.manager_id = m.id
+        join role r on e.role_id = r.id
+        join department d on r.department_id = d.id
+        where r.department_id = ${departmentId}`);
     }
 
     create({ first_name, last_name, role_id, manager_id }) {

@@ -1,11 +1,6 @@
 const inquirer = require("inquirer")
-// const ORM = require('../services/orm');
-// const orm = new ORM();
-// const Employee = require('../models/employee');
-// const employeeModel = new Employee(orm)
 
 function buildQuestions({ employees}) {
-    // const employees = await employeeModel.getAll()
     const questions = [
         
         {

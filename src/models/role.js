@@ -5,7 +5,15 @@ class Role {
         this.orm = orm
     }
     getAll(){
-        return this.orm.getAll('role');
+        return this.orm.query(
+        `select 
+        r.id,
+        r.title,
+        r.salary,
+        d.name as department
+        from role r
+        join department d on r.department_id = d.id;
+        `);
     }
 
     create({ title, salary, department_id }) {

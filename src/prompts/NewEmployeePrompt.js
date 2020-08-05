@@ -1,14 +1,6 @@
 const inquirer = require("inquirer")
-// const ORM = require('../services/orm');
-// const orm = new ORM();
-// const Role = require('../models/role');
-// const Employee = require('../models/employee');
-// const roleModel = new Role(orm)
-// const employeeModel = new Employee(orm)
 
 function buildQuestions({ employees, roles }) {
-    // const roles = await roleModel.getAll()
-    // const employees = await employeeModel.getAll()
     const questions = [
         {
             type: 'input',
