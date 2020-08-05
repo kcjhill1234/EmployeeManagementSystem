@@ -9,7 +9,7 @@ class Department {
     }
 
     create(name){
-        return this.orm.create('department', ['name'], [name])
+        return this.orm.create('department', ['name'], [`'${name}'`])
     }
 
     update(id, name){
